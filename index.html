@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Prefer Windows Hello PIN while your laptop lid is closed, then restore normal sign-in behavior when it opens."
+    />
+    <title>Lid PIN Default</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="shell nav">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">⌁</span>
+        <span>Lid PIN Default</span>
+      </div>
+      <a href="#install">Install</a>
+    </header>
+
+    <main>
+      <section class="shell hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Experimental Windows utility</p>
+          <h1>Close the lid. Keep the PIN.</h1>
+          <p>
+            Prefer PIN authentication while your laptop lid is closed, then return to your normal Windows Hello setup when it opens.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="LidPinDefault.ps1" download>Download PowerShell</a>
+            <a class="button" href="#how">How it works</a>
+          </div>
+        </div>
+
+        <div class="device" aria-label="Illustration of a Windows laptop showing a PIN prompt">
+          <div class="device-glow"></div>
+          <div class="laptop">
+            <div class="screen">
+              <div class="pin-panel">
+                <div class="lock" aria-hidden="true"></div>
+                <div class="pin-dots" aria-label="PIN hidden">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="status-chip">Lid closed · PIN preferred</div>
+        </div>
+      </section>
+
+      <section class="section" id="how">
+        <div class="shell">
+          <div class="section-heading">
+            <p class="eyebrow">How it works</p>
+            <h2>A small listener with a reversible policy change.</h2>
+            <p>No driver, account, or cloud service is required.</p>
+          </div>
+          <div class="steps">
+            <article class="card">
+              <div class="number">01</div>
+              <h3>Listen</h3>
+              <p>Uses the Windows lid-switch power notification instead of guessing from display state.</p>
+            </article>
+            <article class="card">
+              <div class="number">02</div>
+              <h3>Prefer PIN</h3>
+              <p>When closed, PIN becomes the default and face/fingerprint credential providers are temporarily excluded.</p>
+            </article>
+            <article class="card">
+              <div class="number">03</div>
+              <h3>Restore</h3>
+              <p>Opening the lid restores the exact policy values saved during installation.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="install">
+        <div class="shell install-grid">
+          <div class="section-heading">
+            <p class="eyebrow">Install</p>
+            <h2>One command. Fully removable.</h2>
+            <p>Download the script, open Windows PowerShell as Administrator, and run the command.</p>
+          </div>
+          <div class="terminal">
+            <div class="terminal-bar">
+              <div class="window-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+              <button class="copy-button" type="button" data-copy="install-command">Copy</button>
+            </div>
+            <pre id="install-command">powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\LidPinDefault.ps1" -Install</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="shell notice">
+          <div class="notice-mark" aria-hidden="true">!</div>
+          <div>
+            <h3>Test it on your device</h3>
+            <p>
+              Windows 10/11, an existing Windows Hello PIN, and administrator access are required. OEM utilities and organization-managed policies may change the result. While the lid is closed, biometric credential providers are also excluded from application authentication prompts. This is not a security boundary or an official Microsoft tool.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell footer">
+      <span>Lid PIN Default</span>
+      <span>Local, reversible, experimental.</span>
+    </footer>
+
+    <script>
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const target = document.getElementById(button.dataset.copy);
+          try {
+            await navigator.clipboard.writeText(target.textContent.trim());
+            const previous = button.textContent;
+            button.textContent = "Copied";
+            setTimeout(() => (button.textContent = previous), 1400);
+          } catch {
+            window.getSelection().selectAllChildren(target);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
